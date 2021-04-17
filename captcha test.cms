@@ -1,0 +1,17 @@
+﻿lclick(175,525)
+getscreen()
+wait(10)
+
+if_pixel_in(163, 514, 197,544, 5611008)
+    lclick(334, 641)
+else
+   lclick(229, 800)
+   wait(10)
+   if_pixel_in(165, 607, 433,658, 3092807)
+      lclick( 572,25)
+      wait(1)
+      keypress(#f5)
+      goto(skip)
+   end_if
+      
+end_if   

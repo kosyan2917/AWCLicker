@@ -1,0 +1,57 @@
+﻿
+LCLICK(rnd(756-10,766),rnd(817, 837))
+wait(2)
+getscreen()
+$flag = 1
+while ($flag)
+IF_pixel_in(0,0,1600,900,8309738)
+   print("ждемс") 
+else
+   $flag = 0
+end_if 
+wait(1)
+getscreen()  
+end_cyc   
+wait(3)
+LCLICK(rnd(750, 770) ,rnd(565, 580))
+wait(15)
+lclick(175,529)
+wait(10)
+getscreen()
+if_pixel_in(163, 514, 197,544, 5611008)
+    lclick(229, 800)
+else
+   lclick(334, 641)
+   wait(10)
+end_if   
+wait(5)
+getscreen()
+wait(5)
+keypress(#f5)
+wait(15)
+LCLICK(rnd(789,809),rnd(700, 720))
+wait(15)
+Lclick(rnd(1197, 1217),rnd(330, 360))
+wait(2)
+$flag = 1
+$count = 0
+while ($flag)
+IF_pixel_in(693,806,852, 850, 16777215)
+   $flag = 0
+else
+   print("ждемс майн")
+	 $count = $count + 1
+end_if
+if ($count > 210)
+   keypress(#f5)
+   wait(15)
+   LCLICK(rnd(789,809),rnd(700, 720))
+   wait(15)
+   Lclick(rnd(1197, 1217),rnd(330, 360))
+   wait(2)
+   $count = 0
+end_if
+wait(1)
+getscreen()  
+end_cyc 
+wait(2)  
