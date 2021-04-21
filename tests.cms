@@ -1,5 +1,0 @@
-﻿hset(wndfind("alien worlds"), 1)
-getscreen()
-screenshot()
-print(pxl(760, 459))
-wait(5)

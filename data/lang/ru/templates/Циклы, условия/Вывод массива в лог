@@ -1,3 +1,0 @@
-﻿FOR($a=0,$a<ARRSIZE($arr))
-   LOGWRITE ($arr[$a])
-END_CYC

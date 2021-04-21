@@ -1,3 +1,0 @@
-﻿KEYDOWN(#A)
-WAITMS(60)
-KEYUP(#A)
