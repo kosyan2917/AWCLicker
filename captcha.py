@@ -44,7 +44,7 @@ def getKey(url):
 
     solver = recaptchaV2Proxyless()
     solver.set_verbose(1)
-    solver.set_key("ea2001fcb2c6e6c3c62bb279577b8b13")
+    solver.set_key("04d5d4408c5f61f857d3d3c5708a8537")
     solver.set_website_url(url)
     solver.set_website_key("6LdaB7UUAAAAAD2w3lLYRQJqsoup5BsYXI2ZIpFF")
     # set optional custom parameter which Google made for their search page Recaptcha v2

@@ -1,3 +1,4 @@
+import threading
 import time
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
@@ -14,6 +15,7 @@ class GamerBot:
         self.actions = ActionChains(self.driver)
         self.finder = CheckImage()
         self.buttons = {'mine1.png':'main.png', 'login.png': 'screen.png', 'mining hub button.png':'return menu.png', 'mine2.png':'mining hub.png', 'claim.png':'claim menu.png'}
+        self.mainbuttons = ['mine1.png', 'mining hub button.png', 'mine2.png', 'claim.png', 'Close.png']
         self.mainWindowHandle = ''
 
     def startgame(self):
@@ -29,34 +31,23 @@ class GamerBot:
 
     def main_cycle(self):
         # main
-        print('main')
-        cords = self.wait_for_find_button('mine1.png')
-        self.click_check(cords[0], cords[1], 'mine1.png')
         while True:
 
-            #second mine
-            print('mine2')
-            cords = self.wait_for_find_button('mine2.png')
-            self.click_check(cords[0], cords[1], 'mine2.png')
+            cords = self.find_any_button()
+            if cords:
+                print(cords)
+                self.click(cords[0], cords[1])
+            windows = self.driver.window_handles
+            if len(windows) > 1:
+                captcha.kok(self.driver)
+                time.sleep(2)
+                self.driver.switch_to.window(self.mainWindowHandle)
+            time.sleep(4)
 
-            #claim
-            print('claim')
-            cords = self.wait_for_find_button('claim.png')
-            self.click_check(cords[0], cords[1], 'claim.png')
-
-
-            captcha.kok(self.driver)
-
-
-            time.sleep(220)
-            self.driver.switch_to.window(self.mainWindowHandle)
-            # return to mining hub
-            print('return to mining hub')
-            cords = self.wait_for_find_button('mining hub button.png')
-            self.click_check(cords[0], cords[1], 'mining hub button.png')
 
     def wait_for_find_button(self, button):
         while True:
+            print('ищу кнопку')
             self.driver.save_screenshot(self.buttons[button])
             cords = self.find_button(button)
             if cords:
@@ -64,23 +55,21 @@ class GamerBot:
             time.sleep(1)
 
     def click(self, cor1, cor2):
+        #self.actions.move_by_offset(cor1, cor2).click().perform()
         self.actions.move_to_element_with_offset(self.driver.find_element_by_tag_name('html'), cor1, cor2).click().perform()
 
-    def click_check(self, cor1, cor2, button):
-        self.actions.move_to_element_with_offset(self.driver.find_element_by_tag_name('html'), cor1, cor2).click().perform()
-        while True:
-            time.sleep(3)
-            self.driver.save_screenshot(self.buttons[button])
-            cords = self.find_button(button)
-            print(cords)
+
+    def find_any_button(self):
+        self.driver.save_screenshot("screen.png")
+        for key in self.mainbuttons:
+            cords = self.find_button(key)
             if cords:
-                self.actions.move_to_element_with_offset(self.driver.find_element_by_tag_name('html'), cor1, cor2).click().perform()
-                print('нажал')
-            else:
-                break
+                return cords
+        return ()
+
 
     def find_button(self, button):
-        self.finder.upload_image(self.buttons[button])
+        self.finder.upload_image("screen.png")
         return self.finder.find_image(button)
 
 if __name__ == "__main__":
@@ -89,13 +78,12 @@ if __name__ == "__main__":
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         options.add_argument("--window-size=1600,900")
-        chromeProfile = "D:\\Projects\\Python\\alienwords\\User Data"
+        chromeProfile = "D:\\Projects\\Python\\alienwords\\User Data1"
         options.add_argument(f"--user-data-dir={chromeProfile}")
-        options.add_argument("--profile-directory=Profile 1")
+        #options.add_argument("--profile-directory=Profile 1")
+
     except:
         pass
 
     bot = GamerBot(options, 'D:\\Projects\\Python\\alienwords\\AWCLicker\\chromedriver.exe')
     bot.startgame()
-#6LdaB7UUAAAAAD2w3lLYRQJqsoup5BsYXI2ZIpFF
-#___grecaptcha_cfg.clients['0']['I']['I']['callback']();
