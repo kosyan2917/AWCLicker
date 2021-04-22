@@ -14,19 +14,15 @@ class GamerBot:
         self.actions = ActionChains(self.driver)
         self.finder = CheckImage()
         self.buttons = {'mine1.png':'main.png', 'login.png': 'screen.png', 'mining hub button.png':'return menu.png', 'mine2.png':'mining hub.png', 'claim.png':'claim menu.png'}
+        self.mainWindowHandle = ''
 
     def startgame(self):
         self.driver.get("https://play.alienworlds.io/")
         cords = self.wait_for_find_button('login.png')
         print(cords)
         self.click(cords[0], cords[1])
-        windows = self.driver.window_handles
-        '''for window in windows:
-            self.driver.switch_to_window(window)
-            element = self.driver.find_elements_by_xpath("//input[@name='userName']")
-            if element:
-                element[0].send_keys('223')
-                break'''
+        self.mainWindowHandle = self.driver.current_window_handle
+
         print('Input any key')
         input()
         self.main_cycle()
@@ -52,7 +48,8 @@ class GamerBot:
             captcha.kok(self.driver)
 
 
-            time.sleep(240)
+            time.sleep(220)
+            self.driver.switch_to.window(self.mainWindowHandle)
             # return to mining hub
             print('return to mining hub')
             cords = self.wait_for_find_button('mining hub button.png')
