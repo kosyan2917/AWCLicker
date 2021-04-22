@@ -15,7 +15,7 @@ class GamerBot:
         self.actions = ActionChains(self.driver)
         self.finder = CheckImage()
         self.buttons = {'mine1.png':'main.png', 'login.png': 'screen.png', 'mining hub button.png':'return menu.png', 'mine2.png':'mining hub.png', 'claim.png':'claim menu.png'}
-        self.mainbuttons = ['mine1.png', 'mining hub button.png', 'mine2.png', 'claim.png', 'Close.png']
+        self.mainbuttons = ['mine1.png', 'mining hub button.png', 'mine2.png', 'claim.png', 'Close.png', 'Close2.png', 'claim_big.png']
         self.mainWindowHandle = ''
 
     def startgame(self):
@@ -57,6 +57,7 @@ class GamerBot:
     def click(self, cor1, cor2):
         #self.actions.move_by_offset(cor1, cor2).click().perform()
         self.actions.move_to_element_with_offset(self.driver.find_element_by_tag_name('html'), cor1, cor2).click().perform()
+        #self.actions.move_to_element(self.driver.find_element_by_tag_name('html')).move_by_offset(cor1, cor2).click().perform()
 
 
     def find_any_button(self):
