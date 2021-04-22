@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/SmartClicker.iml" filepath="$PROJECT_DIR$/.idea/SmartClicker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/AWCLicker.iml" filepath="$PROJECT_DIR$/.idea/AWCLicker.iml" />
     </modules>
   </component>
 </project>

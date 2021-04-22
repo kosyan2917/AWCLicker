@@ -1,6 +1,9 @@
 import time
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.wait import WebDriverWait
+import captcha
+
 from ScreenManager import CheckImage
 
 class GamerBot:
@@ -14,25 +17,88 @@ class GamerBot:
 
     def startgame(self):
         self.driver.get("https://play.alienworlds.io/")
-        time.sleep(25)
-        cords = self.find_button('login.png')
+        cords = self.wait_for_find_button('login.png')
+        print(cords)
         self.click(cords[0], cords[1])
-        time.sleep(5)
         windows = self.driver.window_handles
-        print(windows)
+        '''for window in windows:
+            self.driver.switch_to_window(window)
+            element = self.driver.find_elements_by_xpath("//input[@name='userName']")
+            if element:
+                element[0].send_keys('223')
+                break'''
+        print('Input any key')
+        input()
+        self.main_cycle()
+
+    def main_cycle(self):
+        # main
+        print('main')
+        cords = self.wait_for_find_button('mine1.png')
+        self.click_check(cords[0], cords[1], 'mine1.png')
+        while True:
+
+            #second mine
+            print('mine2')
+            cords = self.wait_for_find_button('mine2.png')
+            self.click_check(cords[0], cords[1], 'mine2.png')
+
+            #claim
+            print('claim')
+            cords = self.wait_for_find_button('claim.png')
+            self.click_check(cords[0], cords[1], 'claim.png')
+
+
+            captcha.kok(self.driver)
+
+
+            time.sleep(240)
+            # return to mining hub
+            print('return to mining hub')
+            cords = self.wait_for_find_button('mining hub button.png')
+            self.click_check(cords[0], cords[1], 'mining hub button.png')
+
+    def wait_for_find_button(self, button):
+        while True:
+            self.driver.save_screenshot(self.buttons[button])
+            cords = self.find_button(button)
+            if cords:
+                return cords
+            time.sleep(1)
 
     def click(self, cor1, cor2):
         self.actions.move_to_element_with_offset(self.driver.find_element_by_tag_name('html'), cor1, cor2).click().perform()
-        #self.actions.move_by_offset(cor1, cor2).click().perform()
+
+    def click_check(self, cor1, cor2, button):
+        self.actions.move_to_element_with_offset(self.driver.find_element_by_tag_name('html'), cor1, cor2).click().perform()
+        while True:
+            time.sleep(3)
+            self.driver.save_screenshot(self.buttons[button])
+            cords = self.find_button(button)
+            print(cords)
+            if cords:
+                self.actions.move_to_element_with_offset(self.driver.find_element_by_tag_name('html'), cor1, cor2).click().perform()
+                print('нажал')
+            else:
+                break
 
     def find_button(self, button):
         self.finder.upload_image(self.buttons[button])
         return self.finder.find_image(button)
 
 if __name__ == "__main__":
-    options = webdriver.ChromeOptions()
-    options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    options.add_experimental_option('useAutomationExtension', False)
-    options.add_argument('--start-maximized')
-    bot = GamerBot(options, 'chromedriver.exe')
+    try:
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
+        options.add_argument("--window-size=1600,900")
+        chromeProfile = "D:\\Projects\\Python\\alienwords\\User Data"
+        options.add_argument(f"--user-data-dir={chromeProfile}")
+        options.add_argument("--profile-directory=Profile 1")
+    except:
+        pass
+
+    bot = GamerBot(options, 'D:\\Projects\\Python\\alienwords\\AWCLicker\\chromedriver.exe')
     bot.startgame()
+#6LdaB7UUAAAAAD2w3lLYRQJqsoup5BsYXI2ZIpFF
+#___grecaptcha_cfg.clients['0']['I']['I']['callback']();

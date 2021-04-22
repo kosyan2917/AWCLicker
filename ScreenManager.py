@@ -20,10 +20,10 @@ class CheckImage:
         template = cv2.imread(image, 0)
         w, h = template.shape[::-1]
         res = cv2.matchTemplate(self.grey, template, cv2.TM_CCOEFF_NORMED)
-        threshold = 0.9
+        threshold = 0.75
         loc = np.where(res >= threshold)
         try:
             pt = (loc[1][0]+w/2, loc[0][0]+h/2)
             return pt
         except IndexError:
-            return (-1,-1)
+            return ()
