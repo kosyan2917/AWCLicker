@@ -14,6 +14,9 @@ def kok(driver):
             if element:
                 print(driver.current_url)
                 kekw = getKey(driver.current_url)
+                while kekw == 0:
+                    kekw = getKey(driver.current_url)
+                    #raise Exception('3228')
                 print('found kok')
 
                 jsstupid = True
@@ -55,3 +58,4 @@ def getKey(url):
         return g_response
     else:
         print("task finished with error " + solver.error_code)
+        return 0

@@ -15,7 +15,7 @@ class GamerBot:
         self.actions = ActionChains(self.driver)
         self.finder = CheckImage()
         self.buttons = {'mine1.png':'main.png', 'login.png': 'screen.png', 'mining hub button.png':'return menu.png', 'mine2.png':'mining hub.png', 'claim.png':'claim menu.png'}
-        self.mainbuttons = ['mine1.png', 'mining hub button.png', 'mine2.png', 'claim.png', 'Close.png', 'Close2.png', 'claim_big.png']
+        self.mainbuttons = ['mine1.png', 'mining hub button.png', 'mine2.png', 'claim.png', 'Close.png', 'Close2.png', 'claim_big.png', 'login.png']
         self.mainWindowHandle = ''
 
     def startgame(self):
@@ -36,12 +36,21 @@ class GamerBot:
             cords = self.find_any_button()
             if cords:
                 print(cords)
-                self.click(cords[0], cords[1])
+                try:
+                    self.click(cords[0], cords[1])
+                except:
+                    pass
             windows = self.driver.window_handles
             if len(windows) > 1:
-                captcha.kok(self.driver)
+                try:
+                    captcha.kok(self.driver)
+                except:
+                    self.driver.close()
                 time.sleep(2)
                 self.driver.switch_to.window(self.mainWindowHandle)
+                print(self.mainWindowHandle)
+                print(self.driver.current_window_handle)
+                time.sleep(7)
             time.sleep(4)
 
 
