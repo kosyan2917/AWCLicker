@@ -27,12 +27,17 @@ class GamerBot:
 
         print('Input any key')
         input()
+        # try:
+        #     #captcha.kok(self.driver)
+        # except:
+        #     pass
+        self.driver.switch_to.window(self.mainWindowHandle)
         self.main_cycle()
 
     def main_cycle(self):
         # main
         while True:
-
+            print('iteration')
             cords = self.find_any_button()
             if cords:
                 print(cords)
@@ -41,6 +46,7 @@ class GamerBot:
                 except:
                     pass
             windows = self.driver.window_handles
+            print(windows)
             if len(windows) > 1:
                 try:
                     captcha.kok(self.driver)
@@ -48,8 +54,6 @@ class GamerBot:
                     self.driver.close()
                 time.sleep(2)
                 self.driver.switch_to.window(self.mainWindowHandle)
-                print(self.mainWindowHandle)
-                print(self.driver.current_window_handle)
                 time.sleep(7)
             time.sleep(4)
 

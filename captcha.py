@@ -19,15 +19,6 @@ def kok(driver):
                     #raise Exception('3228')
                 print('found kok')
 
-                jsstupid = True
-                while jsstupid:
-                    try:
-                        driver.execute_script("document.getElementById('g-recaptcha-response').setAttribute('style','width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px;')")
-                        jsstupid = False
-                    except:
-                        pass
-                element[0].send_keys(kekw)
-                print('сделал кекш')
                 lol = "___grecaptcha_cfg.clients['0']['I']['I']['callback']('"+kekw+"');"
                 print(lol)
                 driver.execute_script(lol)
@@ -35,7 +26,6 @@ def kok(driver):
                 element.click()
 
                 flag = False
-
 
                 break
 
