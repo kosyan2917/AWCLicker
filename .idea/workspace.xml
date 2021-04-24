@@ -4,7 +4,6 @@
     <list default="true" id="856dcd5d-6352-4162-82ab-cf483f0cb51b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SmartClicker.py" beforeDir="false" afterPath="$PROJECT_DIR$/SmartClicker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/captcha.py" beforeDir="false" afterPath="$PROJECT_DIR$/captcha.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screen.png" beforeDir="false" afterPath="$PROJECT_DIR$/screen.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -139,6 +138,9 @@
       <workItem from="1619122782355" duration="2895000" />
       <workItem from="1619137450300" duration="1771000" />
       <workItem from="1619194521739" duration="3112000" />
+      <workItem from="1619268604302" duration="204000" />
+      <workItem from="1619269044168" duration="71000" />
+      <workItem from="1619269237610" duration="537000" />
     </task>
     <servers />
   </component>

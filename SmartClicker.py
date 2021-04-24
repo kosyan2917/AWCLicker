@@ -32,19 +32,12 @@ class GamerBot:
         # except:
         #     pass
         self.driver.switch_to.window(self.mainWindowHandle)
+        time.sleep(10)
         self.main_cycle()
 
     def main_cycle(self):
         # main
         while True:
-            print('iteration')
-            cords = self.find_any_button()
-            if cords:
-                print(cords)
-                try:
-                    self.click(cords[0], cords[1])
-                except:
-                    pass
             windows = self.driver.window_handles
             print(windows)
             if len(windows) > 1:
@@ -55,6 +48,14 @@ class GamerBot:
                 time.sleep(2)
                 self.driver.switch_to.window(self.mainWindowHandle)
                 time.sleep(7)
+            cords = self.find_any_button()
+            if cords:
+                print(cords)
+                try:
+                    self.click(cords[0], cords[1])
+                except:
+                    pass
+
             time.sleep(4)
 
 
