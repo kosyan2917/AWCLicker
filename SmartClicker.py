@@ -26,35 +26,38 @@ class GamerBot:
         print(cords)
         self.click(cords[0], cords[1])
         self.mainWindowHandle = self.driver.current_window_handle
-        time.sleep(10)
-        with open('auth.txt') as f:
-            login = f.readline()
-            login = login.replace('\n','')
-            password = f.readline()
-        flag = True
-        while flag:
-            windows = self.driver.window_handles
+        # time.sleep(10)
+        # with open('auth.txt') as f:
+        #     login = f.readline()
+        #     login = login.replace('\n','')
+        #     password = f.readline()
 
-            for window in windows:
-                self.driver.switch_to.window(window)
-                element = self.driver.find_elements_by_xpath('//*[@name="userName"]')
-                if element:
-
-                    element[0].click()
-                    element[0].clear()
-                    element[0].send_keys(login)
-                    element2 = self.driver.find_elements_by_xpath('//*[@name="password"]')
-                    element2[0].click()
-                    element2[0].clear()
-                    element2[0].send_keys(password)
-                    captcha.kok(self.driver, True)
-                    time.sleep(4)
-                    element = self.driver.find_elements_by_xpath('//button[text()="Login"]')
-                    element[0].click()
-
-                    flag = False
-                    break
-        self.driver.switch_to.window(self.mainWindowHandle)
+        # flag = True
+        # while flag:
+        #     windows = self.driver.window_handles
+        #
+        #     for window in windows:
+        #         self.driver.switch_to.window(window)
+        #         element = self.driver.find_elements_by_xpath('//*[@name="userName"]')
+        #         if element:
+        #
+        #             element[0].click()
+        #             element[0].clear()
+        #             element[0].send_keys(login)
+        #             element2 = self.driver.find_elements_by_xpath('//*[@name="password"]')
+        #             element2[0].click()
+        #             element2[0].clear()
+        #             element2[0].send_keys(password)
+        #             captcha.kok(self.driver, True)
+        #             time.sleep(4)
+        #             element = self.driver.find_elements_by_xpath('//button[text()="Login"]')
+        #             element[0].click()
+        #
+        #             flag = False
+        #             break
+        # self.driver.switch_to.window(self.mainWindowHandle)
+        print('sosite')
+        input()
         time.sleep(10)
         x = threading.Thread(target=self.captcha_thread)
         x.start()
