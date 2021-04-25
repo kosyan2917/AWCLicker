@@ -1,3 +1,5 @@
+import os
+import sys
 import threading
 import time
 from selenium import webdriver
@@ -24,30 +26,43 @@ class GamerBot:
         print(cords)
         self.click(cords[0], cords[1])
         self.mainWindowHandle = self.driver.current_window_handle
+        time.sleep(10)
+        with open('auth.txt') as f:
+            login = f.readline()
+            login = login.replace('\n','')
+            password = f.readline()
+        flag = True
+        while flag:
+            windows = self.driver.window_handles
 
-        print('Input any key')
-        input()
-        # try:
-        #     #captcha.kok(self.driver)
-        # except:
-        #     pass
+            for window in windows:
+                self.driver.switch_to.window(window)
+                element = self.driver.find_elements_by_xpath('//*[@name="userName"]')
+                if element:
+
+                    element[0].click()
+                    element[0].clear()
+                    element[0].send_keys(login)
+                    element2 = self.driver.find_elements_by_xpath('//*[@name="password"]')
+                    element2[0].click()
+                    element2[0].clear()
+                    element2[0].send_keys(password)
+                    captcha.kok(self.driver, True)
+                    time.sleep(4)
+                    element = self.driver.find_elements_by_xpath('//button[text()="Login"]')
+                    element[0].click()
+
+                    flag = False
+                    break
         self.driver.switch_to.window(self.mainWindowHandle)
         time.sleep(10)
+        x = threading.Thread(target=self.captcha_thread)
+        x.start()
         self.main_cycle()
 
     def main_cycle(self):
         # main
         while True:
-            windows = self.driver.window_handles
-            print(windows)
-            if len(windows) > 1:
-                try:
-                    captcha.kok(self.driver)
-                except:
-                    self.driver.close()
-                time.sleep(2)
-                self.driver.switch_to.window(self.mainWindowHandle)
-                time.sleep(7)
             cords = self.find_any_button()
             if cords:
                 print(cords)
@@ -56,49 +71,68 @@ class GamerBot:
                 except:
                     pass
 
-            time.sleep(4)
+            time.sleep(5)
 
+    def captcha_thread(self):
+        while True:
+            windows = self.driver.window_handles
+            print(windows)
+            if len(windows) > 1:
+                try:
+                    captcha.kok(self.driver, False)
+                except:
+                    self.driver.close()
+                time.sleep(2)
+                self.driver.switch_to.window(self.mainWindowHandle)
+                time.sleep(7)
+            time.sleep(4)
 
     def wait_for_find_button(self, button):
         while True:
             print('ищу кнопку')
-            self.driver.save_screenshot(self.buttons[button])
-            cords = self.find_button(button)
+            #self.driver.save_screenshot(self.buttons[button])
+            screenshot = self.driver.get_screenshot_as_png()
+            cords = self.find_button(button, screenshot)
             if cords:
                 return cords
             time.sleep(1)
 
     def click(self, cor1, cor2):
         #self.actions.move_by_offset(cor1, cor2).click().perform()
+        #kekw = "document.elementFromPoint("+ str(cor1) +"," +  str(cor2) + ").click();"
+        #self.driver.execute_script(kekw)
         self.actions.move_to_element_with_offset(self.driver.find_element_by_tag_name('html'), cor1, cor2).click().perform()
         #self.actions.move_to_element(self.driver.find_element_by_tag_name('html')).move_by_offset(cor1, cor2).click().perform()
 
 
     def find_any_button(self):
-        self.driver.save_screenshot("screen.png")
+        #self.driver.save_screenshot("screen.png")
+        screenshot = self.driver.get_screenshot_as_png()
         for key in self.mainbuttons:
-            cords = self.find_button(key)
+            cords = self.find_button(key, screenshot)
             if cords:
                 return cords
         return ()
 
 
-    def find_button(self, button):
-        self.finder.upload_image("screen.png")
+    def find_button(self, button, screenshot):
+        self.finder.upload_image(screenshot)
         return self.finder.find_image(button)
 
 if __name__ == "__main__":
+    with open('datapath.txt') as f:
+        userdata = f.read()
     try:
         options = webdriver.ChromeOptions()
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         options.add_argument("--window-size=1600,900")
-        chromeProfile = "D:\\Projects\\Python\\alienwords\\User Data1"
+        chromeProfile = userdata
         options.add_argument(f"--user-data-dir={chromeProfile}")
         #options.add_argument("--profile-directory=Profile 1")
 
     except:
         pass
-
-    bot = GamerBot(options, 'D:\\Projects\\Python\\alienwords\\AWCLicker\\chromedriver.exe')
+    print()
+    bot = GamerBot(options, './chromedriver.exe')
     bot.startgame()

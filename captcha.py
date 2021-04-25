@@ -3,7 +3,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-def kok(driver):
+with open('token.txt') as f:
+    token = f.read()
+
+def kok(driver, startflag):
     flag = True
     while flag:
         windows = driver.window_handles
@@ -22,8 +25,9 @@ def kok(driver):
                 lol = "___grecaptcha_cfg.clients['0']['I']['I']['callback']('"+kekw+"');"
                 print(lol)
                 driver.execute_script(lol)
-                element = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//button[@class='button button-secondary button-large text-1-5rem text-bold mx-1']")))
-                element.click()
+                if not startflag:
+                    element = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//button[@class='button button-secondary button-large text-1-5rem text-bold mx-1']")))
+                    element.click()
 
                 flag = False
 
@@ -37,7 +41,7 @@ def getKey(url):
 
     solver = recaptchaV2Proxyless()
     solver.set_verbose(1)
-    solver.set_key("04d5d4408c5f61f857d3d3c5708a8537")
+    solver.set_key(token)
     solver.set_website_url(url)
     solver.set_website_key("6LdaB7UUAAAAAD2w3lLYRQJqsoup5BsYXI2ZIpFF")
     # set optional custom parameter which Google made for their search page Recaptcha v2

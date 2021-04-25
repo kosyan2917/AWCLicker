@@ -11,7 +11,9 @@ class CheckImage:
 
     def upload_image(self, image):
         try:
-            self.image = cv2.imread(image)
+            #self.image = cv2.imread(image)
+            data = np.fromstring(image, dtype=np.uint8)
+            self.image = cv2.imdecode(data, 1)
             self.grey = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
         except IOError:
             pass
