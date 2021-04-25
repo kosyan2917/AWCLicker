@@ -142,7 +142,9 @@
       <workItem from="1619269237610" duration="2795000" />
       <workItem from="1619345934173" duration="4089000" />
       <workItem from="1619351185770" duration="3472000" />
-      <workItem from="1619356268278" duration="105000" />
+      <workItem from="1619356268278" duration="179000" />
+      <workItem from="1619357243502" duration="1692000" />
+      <workItem from="1619359906870" duration="678000" />
     </task>
     <servers />
   </component>
@@ -163,7 +165,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/AWCLicker$SeleniumProp.coverage" NAME="SeleniumProp Coverage Results" MODIFIED="1619055166134" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/AWCLicker$SmartClicker.coverage" NAME="SmartClicker Coverage Results" MODIFIED="1619353974258" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AWCLicker$SmartClicker.coverage" NAME="SmartClicker Coverage Results" MODIFIED="1619358783036" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AWCLicker$SmartClicker__2_.coverage" NAME="SmartClicker (2) Coverage Results" MODIFIED="1619127953262" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../AWCLicker4" />
     <SUITE FILE_PATH="coverage/AWCLicker$SmartClicker__1_.coverage" NAME="SmartClicker (1) Coverage Results" MODIFIED="1619127751656" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../AWCLicker 4" />
   </component>

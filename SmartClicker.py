@@ -66,13 +66,16 @@ class GamerBot:
     def main_cycle(self):
         # main
         while True:
-            cords = self.find_any_button()
-            if cords:
+            try:
+                cords = self.find_any_button()
                 print(cords)
-                try:
-                    self.click(cords[0], cords[1])
-                except:
-                    pass
+                if cords:
+                    try:
+                        self.click(cords[0], cords[1])
+                    except:
+                        pass
+            except:
+                pass
 
             time.sleep(5)
 
