@@ -6,6 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 import captcha
+import requests
 
 from ScreenManager import CheckImage
 
@@ -19,6 +20,7 @@ class GamerBot:
         self.buttons = {'mine1.png':'main.png', 'login.png': 'screen.png', 'mining hub button.png':'return menu.png', 'mine2.png':'mining hub.png', 'claim.png':'claim menu.png'}
         self.mainbuttons = ['mine1.png', 'mining hub button.png', 'mine2.png', 'claim.png', 'Close.png', 'Close2.png', 'claim_big.png', 'login.png']
         self.mainWindowHandle = ''
+        self.acc_name = None
 
     def startgame(self):
         self.driver.get("https://play.alienworlds.io/")
@@ -26,37 +28,38 @@ class GamerBot:
         print(cords)
         self.click(cords[0], cords[1])
         self.mainWindowHandle = self.driver.current_window_handle
-        # time.sleep(10)
-        # with open('auth.txt') as f:
-        #     login = f.readline()
-        #     login = login.replace('\n','')
-        #     password = f.readline()
+        time.sleep(10)
+        with open('auth.txt') as f:
+            login = f.readline()
+            login = login.replace('\n','')
+            password = f.readline()
+            password = password.replace('\n', '')
+            self.acc_name = f.readline()
 
-        # flag = True
-        # while flag:
-        #     windows = self.driver.window_handles
+        flag = True
+        while flag:
+            windows = self.driver.window_handles
         #
-        #     for window in windows:
-        #         self.driver.switch_to.window(window)
-        #         element = self.driver.find_elements_by_xpath('//*[@name="userName"]')
-        #         if element:
+            for window in windows:
+                self.driver.switch_to.window(window)
+                element = self.driver.find_elements_by_xpath('//*[@name="userName"]')
+                if element:
         #
-        #             element[0].click()
-        #             element[0].clear()
-        #             element[0].send_keys(login)
-        #             element2 = self.driver.find_elements_by_xpath('//*[@name="password"]')
-        #             element2[0].click()
-        #             element2[0].clear()
-        #             element2[0].send_keys(password)
-        #             captcha.kok(self.driver, True)
-        #             time.sleep(4)
-        #             element = self.driver.find_elements_by_xpath('//button[text()="Login"]')
-        #             element[0].click()
+                    element[0].click()
+                    element[0].clear()
+                    element[0].send_keys(login)
+                    element2 = self.driver.find_elements_by_xpath('//*[@name="password"]')
+                    element2[0].click()
+                    element2[0].clear()
+                    element2[0].send_keys(password)
+                    captcha.kok(self.driver, True)
+                    time.sleep(4)
+                    element = self.driver.find_elements_by_xpath('//button[text()="Login"]')
+                    element[0].click()
         #
-        #             flag = False
-        #             break
-        # self.driver.switch_to.window(self.mainWindowHandle)
-        print('sosite')
+                    flag = False
+                    break
+        self.driver.switch_to.window(self.mainWindowHandle)
         input()
         time.sleep(10)
         x = threading.Thread(target=self.captcha_thread)
@@ -66,17 +69,20 @@ class GamerBot:
     def main_cycle(self):
         # main
         while True:
-            try:
-                cords = self.find_any_button()
-                print(cords)
-                if cords:
-                    try:
-                        self.click(cords[0], cords[1])
-                    except:
-                        pass
-            except:
-                pass
-
+            if self.get_cpu():
+                try:
+                    cords = self.find_any_button()
+                    print(cords)
+                    if cords:
+                        try:
+                            self.click(cords[0], cords[1])
+                        except:
+                            pass
+                except:
+                    pass
+            else:
+                print('Кажется кончилось цпу')
+                time.sleep(5)
             time.sleep(5)
 
     def captcha_thread(self):
@@ -124,21 +130,31 @@ class GamerBot:
     def find_button(self, button, screenshot):
         self.finder.upload_image(screenshot)
         return self.finder.find_image(button)
-
+    
+    def get_cpu(self):
+        print(self.acc_name)
+        response = requests.post('https://wax.greymass.com/v1/chain/get_account',
+                                 data='{{"account_name": "{0}"}}'.format(self.acc_name))
+        response = response.json()
+        print(response)
+        if response["cpu_limit"]["available"] >=1000:
+            return True
+        else:
+            return False
+        
+        
 if __name__ == "__main__":
-    with open('datapath.txt') as f:
-        userdata = f.read()
     try:
         options = webdriver.ChromeOptions()
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         options.add_argument("--window-size=1600,900")
-        chromeProfile = userdata
-        options.add_argument(f"--user-data-dir={chromeProfile}")
+#        chromeProfile = userdata
+ #       options.add_argument(f"--user-data-dir={chromeProfile}")
         #options.add_argument("--profile-directory=Profile 1")
 
     except:
         pass
     print()
-    bot = GamerBot(options, './chromedriver.exe')
+    bot = GamerBot(options, 'chromedriver.exe')
     bot.startgame()

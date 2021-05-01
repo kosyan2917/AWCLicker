@@ -22,7 +22,7 @@ def kok(driver, startflag):
                     #raise Exception('3228')
                 print('found kok')
 
-                lol = "___grecaptcha_cfg.clients['0']['I']['I']['callback']('"+kekw+"');"
+                lol = "___grecaptcha_cfg.clients['0']['C']['C']['callback']('"+kekw+"');"
                 print(lol)
                 driver.execute_script(lol)
                 if not startflag:
