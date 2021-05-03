@@ -154,5 +154,5 @@ if __name__ == "__main__":
     except:
         pass
     print()
-    bot = GamerBot(options, 'chromedriver.exe')
+    bot = GamerBot(options, './chromedriver.exe')
     bot.startgame()

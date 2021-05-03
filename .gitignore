@@ -1,4 +1,4 @@
 *.txt
-__pycache__
-.idea
+/__pycache__
+/.idea
 chromedriver.exe

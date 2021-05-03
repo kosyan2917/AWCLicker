@@ -77,6 +77,12 @@ class GamerBot:
         # main
         while True:
             try:
+                try:
+                    time_mas = self.driver.find_element_by_xpath('//span[@id=\'countdown\']').text.split(':')
+                    time_to_sleep = int(time_mas[0])*360 + int(time_mas[1])*60 + int(time_mas[2])
+                    time.sleep(time_to_sleep)
+                except:
+                    pass
                 if self.get_cpu():
                     try:
                         if self.driver.find_element_by_xpath('//button[@id=\'claim\']').is_enabled():
@@ -172,5 +178,5 @@ if __name__ == "__main__":
     except:
         pass
     print()
-    bot = GamerBot(options, 'chromedriver.exe')
+    bot = GamerBot(options, './chromedriver.exe')
     bot.startgame()
