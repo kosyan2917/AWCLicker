@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="856dcd5d-6352-4162-82ab-cf483f0cb51b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RedditClicker.py" beforeDir="false" afterPath="$PROJECT_DIR$/RedditClicker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SmartClicker.py" beforeDir="false" afterPath="$PROJECT_DIR$/SmartClicker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/captcha.py" beforeDir="false" afterPath="$PROJECT_DIR$/captcha.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,7 +145,9 @@
       <workItem from="1619356268278" duration="179000" />
       <workItem from="1619357243502" duration="1692000" />
       <workItem from="1619359906870" duration="678000" />
-      <workItem from="1620056539724" duration="3862000" />
+      <workItem from="1620056539724" duration="4487000" />
+      <workItem from="1620333137040" duration="573000" />
+      <workItem from="1620339881642" duration="622000" />
     </task>
     <servers />
   </component>

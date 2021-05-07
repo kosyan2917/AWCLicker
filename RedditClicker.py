@@ -9,6 +9,7 @@ import captcha
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import requests
+import undetected_chromedriver as uc
 
 from ScreenManager import CheckImage
 
@@ -17,7 +18,7 @@ class GamerBot:
     
     def __init__(self, options, path):
         self.options = options
-        self.driver = webdriver.Chrome(chrome_options=options, executable_path=path)
+        self.driver = uc.Chrome(chrome_options=options)
         self.actions = ActionChains(self.driver)
         self.finder = CheckImage()
         self.buttons = {'mine1.png': 'main.png', 'login.png': 'screen.png', 'mining hub button.png': 'return menu.png',
@@ -28,6 +29,7 @@ class GamerBot:
         self.acc_name = None
     
     def startgame(self):
+
         self.driver.get("https://aliens.artsy.nz/")
         element = self.driver.find_element_by_xpath("//button[@id='login']")
         print(element)
@@ -35,7 +37,7 @@ class GamerBot:
         element.click()
         time.sleep(2)
         self.mainWindowHandle = self.driver.current_window_handle
-        time.sleep(10)
+        # time.sleep(10)
         with open('auth.txt') as f:
             login = f.readline()
             login = login.replace('\n', '')
@@ -45,30 +47,72 @@ class GamerBot:
         
         flag = True
         while flag:
-            windows = self.driver.window_handles
-            #
-            for window in windows:
-                self.driver.switch_to.window(window)
-                element = self.driver.find_elements_by_xpath('//*[@name="userName"]')
-                if element:
-                    #
-                    element[0].click()
-                    element[0].clear()
-                    element[0].send_keys(login)
-                    element2 = self.driver.find_elements_by_xpath('//*[@name="password"]')
-                    element2[0].click()
-                    element2[0].clear()
-                    element2[0].send_keys(password)
-                    captcha.kok(self.driver, True)
-                    time.sleep(4)
-                    element = self.driver.find_elements_by_xpath('//button[text()="Login"]')
-                    element[0].click()
-                    #
-                    flag = False
-                    break
+            try:
+                windows = self.driver.window_handles
+                for window in windows:
+                    self.driver.switch_to.window(window)
+                    element = self.driver.find_elements_by_xpath('//div[@id="cf-error-details"]')
+                    #print(self.driver.current_url)
+                    if element:
+                        self.driver.switch_to.window(window)
+                        self.driver.get("https://all-access.wax.io/cloud-wallet/login/")
+                        print('found')
+                        time.sleep(2)
+                        flag = False
+                        break
+                    time.sleep(0.5)
+            except:
+                pass
+
+        flag = True
+        while flag:
+            try:
+                windows = self.driver.window_handles
+                for window in windows:
+                    self.driver.switch_to.window(window)
+                    element = self.driver.find_elements_by_xpath('//*[@name="userName"]')
+                    if element:
+                        #
+
+
+                        element[0].click()
+                        element[0].clear()
+                        element[0].send_keys(login)
+                        element2 = self.driver.find_elements_by_xpath('//*[@name="password"]')
+                        element2[0].click()
+                        element2[0].clear()
+                        element2[0].send_keys(password)
+                        captcha.kok(self.driver, True)
+                        time.sleep(0.5)
+                        element = self.driver.find_elements_by_xpath('//button[text()="Login"]')
+                        element[0].click()
+                        #
+                        flag = False
+                        break
+                    time.sleep(0.5)
+            except:
+                pass
+
+        flag = True
+        while flag:
+            try:
+                windows = self.driver.window_handles
+                for window in windows:
+                    self.driver.switch_to.window(window)
+                    element = self.driver.find_elements_by_xpath('//*[text()="Approve"]')
+                    if element:
+                        self.driver.switch_to.window(window)
+                        element[0].click()
+                        time.sleep(2)
+                        flag = False
+                        break
+                    time.sleep(0.5)
+            except:
+                pass
+
         self.driver.switch_to.window(self.mainWindowHandle)
         input()
-        time.sleep(10)
+        time.sleep(1)
         x = threading.Thread(target=self.captcha_thread)
         x.start()
         self.main_cycle()

@@ -10,6 +10,12 @@ def kok(driver, startflag):
     flag = True
     while flag:
         windows = driver.window_handles
+        for window in windows:
+            driver.switch_to.window(window)
+            element = driver.find_elements_by_xpath('//div[@id="cf-error-details"]')
+            if element:
+                driver.get("https://all-access.wax.io/cloud-wallet/signing/")
+                time.sleep(2)
 
         for window in windows:
             driver.switch_to.window(window)
@@ -22,7 +28,7 @@ def kok(driver, startflag):
                     #raise Exception('3228')
                 print('found kok')
 
-                lol = "___grecaptcha_cfg.clients['0']['C']['C']['callback']('"+kekw+"');"
+                lol = "___grecaptcha_cfg.clients['0']['B']['B']['callback']('"+kekw+"');"
                 print(lol)
                 driver.execute_script(lol)
                 if not startflag:
@@ -32,6 +38,7 @@ def kok(driver, startflag):
                 flag = False
 
                 break
+            time.sleep(0.5)
 
 
 
