@@ -51,16 +51,22 @@ class GamerBot:
                 windows = self.driver.window_handles
                 for window in windows:
                     self.driver.switch_to.window(window)
-                    element = self.driver.find_elements_by_xpath('//div[@id="cf-error-details"]')
-                    #print(self.driver.current_url)
+                    element_err = self.driver.find_elements_by_xpath('//div[@id="cf-error-details"]')
+                    element = self.driver.find_elements_by_xpath('//*[@name="userName"]')
                     if element:
+                        flag = False
+                        break
+                    if element_err:
                         self.driver.switch_to.window(window)
                         self.driver.get("https://all-access.wax.io/cloud-wallet/login/")
                         print('found')
                         time.sleep(2)
                         flag = False
                         break
+
+
                     time.sleep(0.5)
+
             except:
                 pass
 

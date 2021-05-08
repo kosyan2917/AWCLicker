@@ -12,8 +12,11 @@ def kok(driver, startflag):
         windows = driver.window_handles
         for window in windows:
             driver.switch_to.window(window)
-            element = driver.find_elements_by_xpath('//div[@id="cf-error-details"]')
+            element_err = driver.find_elements_by_xpath('//div[@id="cf-error-details"]')
+            element = driver.find_elements_by_xpath('//*[@id="g-recaptcha-response"]')
             if element:
+                break
+            if element_err:
                 driver.get("https://all-access.wax.io/cloud-wallet/signing/")
                 time.sleep(2)
 
