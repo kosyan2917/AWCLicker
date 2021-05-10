@@ -131,6 +131,14 @@ class GamerBot:
                     time_mas = self.driver.find_element_by_xpath('//span[@id=\'countdown\']').text.split(':')
                     time_to_sleep = int(time_mas[0])*360 + int(time_mas[1])*60 + int(time_mas[2])
                     time.sleep(time_to_sleep)
+                    try:
+                        element = self.driver.find_element_by_xpath('//button[@id=\'mine\']')
+                        print(element)
+                        time.sleep(1)
+                        element.click()
+                        time.sleep(2)
+                    except Exception as Err:
+                        print(f'Ошибка {Err}')
                 except:
                     pass
                 if self.get_cpu():
