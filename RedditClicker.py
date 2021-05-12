@@ -119,6 +119,77 @@ class GamerBot:
         self.driver.switch_to.window(self.mainWindowHandle)
         input()
         time.sleep(1)
+        self.driver.execute_script('''document.querySelector("p").remove()
+
+let div = document.createElement("div");
+  div.className = "percdiv"
+  div.innerHTML = '<div data-percent="9" class="ui progress blue"><div class="bar" style="width: 100%; transition-duration: 300ms;"><div class="progress"> <div class="content">loading...%</div> </div></div><div class="perclabel">CPU used - loading</div></div>';
+
+  document.querySelector('p').before(div);
+
+let myElements = document.querySelectorAll(".ui.progress.blue");
+
+for (let i = 0; i < myElements.length; i++) {
+    myElements[i].style.color= "black";
+    //myElements[i].style.line-height= "1.4285em";
+    myElements[i].style.display= "block";
+    
+    myElements[i].style.border= "none";
+    myElements[i].style.padding= 0;
+    myElements[i].style.color= "0 0 1.5em";
+    myElements[i].style.background= "rgba(0,0,0,.35)";
+    myElements[i].style.fontFamily= 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif';
+    myElements[i].style.fontWeight = 'bold'
+    myElements[i].style.width = 'auto'
+    myElements[i].style.right= '0.5em';
+
+  
+}
+
+myElements = document.querySelectorAll(".bar");
+
+for (let i = 0; i < myElements.length; i++) {
+    myElements[i].style.backgroundColor = "#2185d0";
+    myElements[i].style.borderRadius = "0.3047619rem";
+    myElements[i].style.transitionDuration= '300ms';
+    myElements[i].style.maxWidth= '340px';
+}
+
+myElements = document.querySelectorAll(".progress");
+
+for (let i = 0; i < myElements.length; i++) {
+     myElements[i].style.textAlign= "right";
+     myElements[i].style.fontSize = "20px";
+
+}
+
+myElements = document.querySelectorAll(".percdiv");
+
+for (let i = 0; i < myElements.length; i++) {
+    myElements[i].style.width= "340px";
+    myElements[i].style.marginTop= "10px";
+    myElements[i].style.marginBottom= "30px";
+}
+
+myElements = document.querySelectorAll(".content");
+
+for (let i = 0; i < myElements.length; i++) {
+    myElements[i].style.marginRight= "7px";
+}
+
+myElements = document.querySelectorAll(".perclabel");
+
+for (let i = 0; i < myElements.length; i++) {
+    myElements[i].style.textAlign = "center";
+    myElements[i].style.marginTop = "0.2em";
+    myElements[i].style.right = "auto";
+    myElements[i].style.left = "0%";
+    myElements[i].style.color = "rgba(255, 255, 255, 0.9)";
+    myElements[i].style.fontSize = "15px";
+    myElements[i].style.position = "absolute";
+    myElements[i].style.textAlign = "center";
+    myElements[i].style.width = "340px"; 
+}''')
         x = threading.Thread(target=self.captcha_thread)
         x.start()
         self.main_cycle()
@@ -214,9 +285,16 @@ class GamerBot:
         return self.finder.find_image(button)
     
     def get_cpu(self):
-        response = requests.post('https://wax.greymass.com/v1/chain/get_account',
+        response = requests.post('https://wax.cryptolions.io/v1/chain/get_account',
                                  data='{{"account_name": "{0}"}}'.format(self.acc_name))
         response = response.json()
+        cpu_used = round(response['cpu_limit']['used']/1000, 2)
+        cpu_max = round(response['cpu_limit']['max']/1000, 2)
+        percentage = round(cpu_used / cpu_max * 100)
+        self.driver.execute_script('document.querySelector(".bar").style.width = "{}%";'.format(percentage))
+        self.driver.execute_script('document.querySelector(".content").innerHTML = "{}%";'.format(percentage))
+        self.driver.execute_script('document.querySelector(".perclabel").innerHTML = "CPU used - {} ms / {} ms";'.format(cpu_used,cpu_max))
+
         if response["cpu_limit"]["available"] >= 1000:
             return True
         else:
