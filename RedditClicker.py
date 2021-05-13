@@ -207,7 +207,8 @@ for (let i = 0; i < myElements.length; i++) {
                         print(element)
                         time.sleep(1)
                         element.click()
-                        time.sleep(2)
+                        WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.XPATH,
+                                                                    '//button[@id=\'claim\']')))
                     except Exception as Err:
                         print(f'Ошибка {Err}')
                 except:
