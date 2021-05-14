@@ -4,6 +4,7 @@
     <list default="true" id="856dcd5d-6352-4162-82ab-cf483f0cb51b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RedditClicker.py" beforeDir="false" afterPath="$PROJECT_DIR$/RedditClicker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/captcha.py" beforeDir="false" afterPath="$PROJECT_DIR$/captcha.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,7 +181,9 @@
       <workItem from="1620339881642" duration="622000" />
       <workItem from="1620369862958" duration="14000" />
       <workItem from="1620821311404" duration="2131000" />
-      <workItem from="1620873210159" duration="1169000" />
+      <workItem from="1620873210159" duration="4808000" />
+      <workItem from="1621010745543" duration="4594000" />
+      <workItem from="1621015949163" duration="427000" />
     </task>
     <servers />
   </component>

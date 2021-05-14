@@ -1,5 +1,3 @@
-import os
-import sys
 import threading
 import time
 from selenium import webdriver
@@ -10,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import requests
 import undetected_chromedriver as uc
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 from ScreenManager import CheckImage
 
@@ -18,7 +17,10 @@ class GamerBot:
     
     def __init__(self, options, path):
         self.options = options
-        self.driver = uc.Chrome(chrome_options=options)
+        # enable browser logging
+        dc = DesiredCapabilities.CHROME
+        dc['goog:loggingPrefs'] = {'browser': 'ALL'}
+        self.driver = uc.Chrome(chrome_options=options,desired_capabilities=dc)
         self.actions = ActionChains(self.driver)
         self.finder = CheckImage()
         self.buttons = {'mine1.png': 'main.png', 'login.png': 'screen.png', 'mining hub button.png': 'return menu.png',
@@ -30,9 +32,9 @@ class GamerBot:
     
     def startgame(self):
 
+
         self.driver.get("https://aliens.artsy.nz/")
         element = self.driver.find_element_by_xpath("//button[@id='login']")
-        print(element)
         time.sleep(2)
         element.click()
         time.sleep(2)
@@ -59,7 +61,6 @@ class GamerBot:
                     if element_err:
                         self.driver.switch_to.window(window)
                         self.driver.get("https://all-access.wax.io/cloud-wallet/login/")
-                        print('found')
                         time.sleep(2)
                         flag = False
                         break
@@ -98,7 +99,6 @@ class GamerBot:
                     time.sleep(0.5)
             except:
                 pass
-
         flag = True
         while flag:
             try:
@@ -198,27 +198,27 @@ for (let i = 0; i < myElements.length; i++) {
         # main
         while True:
             try:
-                try:
-                    time_mas = self.driver.find_element_by_xpath('//span[@id=\'countdown\']').text.split(':')
-                    time_to_sleep = int(time_mas[0])*360 + int(time_mas[1])*60 + int(time_mas[2])
-                    time.sleep(time_to_sleep)
-                    try:
-                        element = self.driver.find_element_by_xpath('//button[@id=\'mine\']')
-                        print(element)
-                        time.sleep(1)
-                        element.click()
-                        WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.XPATH,
-                                                                    '//button[@id=\'claim\']')))
-                    except Exception as Err:
-                        print(f'Ошибка {Err}')
-                except:
-                    pass
+
                 if self.get_cpu():
+                    try:
+                        time_mas = self.driver.find_element_by_xpath('//span[@id=\'countdown\']').text.split(':')
+                        time_to_sleep = int(time_mas[0]) * 360 + int(time_mas[1]) * 60 + int(time_mas[2])
+                        time.sleep(time_to_sleep)
+                        try:
+                            element = self.driver.find_element_by_xpath('//button[@id=\'mine\']')
+                            time.sleep(1)
+                            element.click()
+                            WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.XPATH,
+                                                                                             '//button[@id=\'claim\']')))
+                            time.sleep(3)
+                        except Exception as Err:
+                            print(f'Ошибка {Err}')
+                    except:
+                        pass
                     try:
                         if self.driver.find_element_by_xpath('//button[@id=\'claim\']').is_enabled():
                             try:
                                 element = self.driver.find_element_by_xpath('//button[@id=\'claim\']')
-                                print(element)
                                 time.sleep(1)
                                 element.click()
                             except Exception as Err:
@@ -226,7 +226,6 @@ for (let i = 0; i < myElements.length; i++) {
                         else:
                             try:
                                 element = self.driver.find_element_by_xpath('//button[@id=\'mine\']')
-                                print(element)
                                 time.sleep(1)
                                 element.click()
                             except Exception as Err:
@@ -243,7 +242,6 @@ for (let i = 0; i < myElements.length; i++) {
     def captcha_thread(self):
         while True:
             windows = self.driver.window_handles
-            print(windows)
             if len(windows) > 1:
                 try:
                     captcha.kok(self.driver, False)
