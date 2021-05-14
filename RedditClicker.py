@@ -17,10 +17,7 @@ class GamerBot:
     
     def __init__(self, options, path):
         self.options = options
-        # enable browser logging
-        dc = DesiredCapabilities.CHROME
-        dc['goog:loggingPrefs'] = {'browser': 'ALL'}
-        self.driver = uc.Chrome(chrome_options=options,desired_capabilities=dc)
+        self.driver = uc.Chrome(chrome_options=options)
         self.actions = ActionChains(self.driver)
         self.finder = CheckImage()
         self.buttons = {'mine1.png': 'main.png', 'login.png': 'screen.png', 'mining hub button.png': 'return menu.png',

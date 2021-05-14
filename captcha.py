@@ -24,104 +24,95 @@ def kok(driver, startflag):
             driver.switch_to.window(window)
             element = driver.find_elements_by_xpath('//*[@id="g-recaptcha-response"]')
             if element:
-                driver.execute_script('''function findRecaptchaClients() {
-                                                      // eslint-disable-next-line camelcase
-                                                      if (typeof (___grecaptcha_cfg) !== 'undefined') {
-                                                        // eslint-disable-next-line camelcase, no-undef
-                                                        return Object.entries(___grecaptcha_cfg.clients).map(([cid, client]) => {
-                                                          const data = { id: cid, version: cid >= 10000 ? 'V3' : 'V2' };
-                                                          const objects = Object.entries(client).filter(([_, value]) => value && typeof value === 'object');
+                lol = driver.execute_script('''function findRecaptchaClients() {
+                                                                      // eslint-disable-next-line camelcase
+                                                                      if (typeof (___grecaptcha_cfg) !== 'undefined') {
+                                                                        // eslint-disable-next-line camelcase, no-undef
+                                                                        return Object.entries(___grecaptcha_cfg.clients).map(([cid, client]) => {
+                                                                          const data = { id: cid, version: cid >= 10000 ? 'V3' : 'V2' };
+                                                                          const objects = Object.entries(client).filter(([_, value]) => value && typeof value === 'object');
 
-                                                          objects.forEach(([toplevelKey, toplevel]) => {
-                                                            const found = Object.entries(toplevel).find(([_, value]) => (
-                                                              value && typeof value === 'object' && 'sitekey' in value && 'size' in value
-                                                            ));
+                                                                          objects.forEach(([toplevelKey, toplevel]) => {
+                                                                            const found = Object.entries(toplevel).find(([_, value]) => (
+                                                                              value && typeof value === 'object' && 'sitekey' in value && 'size' in value
+                                                                            ));
 
-                                                            if (typeof toplevel === 'object' && toplevel instanceof HTMLElement && toplevel['tagName'] === 'DIV'){
-                                                                data.pageurl = toplevel.baseURI;
-                                                            }
+                                                                            if (typeof toplevel === 'object' && toplevel instanceof HTMLElement && toplevel['tagName'] === 'DIV'){
+                                                                                data.pageurl = toplevel.baseURI;
+                                                                            }
 
-                                                            if (found) {
-                                                              const [sublevelKey, sublevel] = found;
+                                                                            if (found) {
+                                                                              const [sublevelKey, sublevel] = found;
 
-                                                              data.sitekey = sublevel.sitekey;
-                                                              const callbackKey = data.version === 'V2' ? 'callback' : 'promise-callback';
-                                                              const callback = sublevel[callbackKey];
-                                                              if (!callback) {
-                                                                data.callback = null;
-                                                                data.function = null;
-                                                              } else {
-                                                                data.function = callback;
-                                                                const keys = [cid, toplevelKey, sublevelKey, callbackKey].map((key) => `['${key}']`).join('');
-                                                                data.callback = `___grecaptcha_cfg.clients${keys}`;
-                                                                console.log(data.callback)
-                                                              }
-                                                            }
-                                                          });
-                                                          return data;
-                                                        });
-                                                      }
-                                                      return [];
-                                                    }
-                                                    findRecaptchaClients()''')
+                                                                              data.sitekey = sublevel.sitekey;
+                                                                              const callbackKey = data.version === 'V2' ? 'callback' : 'promise-callback';
+                                                                              const callback = sublevel[callbackKey];
+                                                                              if (!callback) {
+                                                                                data.callback = null;
+                                                                                data.function = null;
+                                                                              } else {
+                                                                                data.function = callback;
+                                                                                const keys = [cid, toplevelKey, sublevelKey, callbackKey].map((key) => `['${key}']`).join('');
+                                                                                data.callback = `___grecaptcha_cfg.clients${keys}`;
+                                                                                //return(data.callback)
+                                                                              }
+                                                                            }
+                                                                          });
+                                                                          return data.callback;
+                                                                        });
+                                                                      }
+                                                                      return [];
+                                                                    }
+                                                                    return (findRecaptchaClients())''')[0]
+                while not lol:
+                    print('не нашел функцию капчи...')
+                    lol = driver.execute_script('''function findRecaptchaClients() {
+                                                                          // eslint-disable-next-line camelcase
+                                                                          if (typeof (___grecaptcha_cfg) !== 'undefined') {
+                                                                            // eslint-disable-next-line camelcase, no-undef
+                                                                            return Object.entries(___grecaptcha_cfg.clients).map(([cid, client]) => {
+                                                                              const data = { id: cid, version: cid >= 10000 ? 'V3' : 'V2' };
+                                                                              const objects = Object.entries(client).filter(([_, value]) => value && typeof value === 'object');
+
+                                                                              objects.forEach(([toplevelKey, toplevel]) => {
+                                                                                const found = Object.entries(toplevel).find(([_, value]) => (
+                                                                                  value && typeof value === 'object' && 'sitekey' in value && 'size' in value
+                                                                                ));
+
+                                                                                if (typeof toplevel === 'object' && toplevel instanceof HTMLElement && toplevel['tagName'] === 'DIV'){
+                                                                                    data.pageurl = toplevel.baseURI;
+                                                                                }
+
+                                                                                if (found) {
+                                                                                  const [sublevelKey, sublevel] = found;
+
+                                                                                  data.sitekey = sublevel.sitekey;
+                                                                                  const callbackKey = data.version === 'V2' ? 'callback' : 'promise-callback';
+                                                                                  const callback = sublevel[callbackKey];
+                                                                                  if (!callback) {
+                                                                                    data.callback = null;
+                                                                                    data.function = null;
+                                                                                  } else {
+                                                                                    data.function = callback;
+                                                                                    const keys = [cid, toplevelKey, sublevelKey, callbackKey].map((key) => `['${key}']`).join('');
+                                                                                    data.callback = `___grecaptcha_cfg.clients${keys}`;
+                                                                                    //return(data.callback)
+                                                                                  }
+                                                                                }
+                                                                              });
+                                                                              return data.callback;
+                                                                            });
+                                                                          }
+                                                                          return [];
+                                                                        }
+                                                                        return (findRecaptchaClients())''')[0]
+
                 #print(driver.current_url)
                 kekw = getKey(driver.current_url)
                 while kekw == 0:
                     kekw = getKey(driver.current_url)
                     #raise Exception('3228')
 
-                lol = -1
-                for entry in driver.get_log('browser'):
-                    k = entry['message'].find("___grecaptcha_cfg.clients['0']")
-                    if k != -1:
-                        lol = entry['message'][k:-1]
-                while lol == -1:
-                    print('не нашел функцию капчи...')
-                    driver.execute_script('''function findRecaptchaClients() {
-                                      // eslint-disable-next-line camelcase
-                                      if (typeof (___grecaptcha_cfg) !== 'undefined') {
-                                        // eslint-disable-next-line camelcase, no-undef
-                                        return Object.entries(___grecaptcha_cfg.clients).map(([cid, client]) => {
-                                          const data = { id: cid, version: cid >= 10000 ? 'V3' : 'V2' };
-                                          const objects = Object.entries(client).filter(([_, value]) => value && typeof value === 'object');
-
-                                          objects.forEach(([toplevelKey, toplevel]) => {
-                                            const found = Object.entries(toplevel).find(([_, value]) => (
-                                              value && typeof value === 'object' && 'sitekey' in value && 'size' in value
-                                            ));
-
-                                            if (typeof toplevel === 'object' && toplevel instanceof HTMLElement && toplevel['tagName'] === 'DIV'){
-                                                data.pageurl = toplevel.baseURI;
-                                            }
-
-                                            if (found) {
-                                              const [sublevelKey, sublevel] = found;
-
-                                              data.sitekey = sublevel.sitekey;
-                                              const callbackKey = data.version === 'V2' ? 'callback' : 'promise-callback';
-                                              const callback = sublevel[callbackKey];
-                                              if (!callback) {
-                                                data.callback = null;
-                                                data.function = null;
-                                              } else {
-                                                data.function = callback;
-                                                const keys = [cid, toplevelKey, sublevelKey, callbackKey].map((key) => `['${key}']`).join('');
-                                                data.callback = `___grecaptcha_cfg.clients${keys}`;
-                                                console.log(data.callback)
-                                              }
-                                            }
-                                          });
-                                          return data;
-                                        });
-                                      }
-                                      return [];
-                                    }
-                                    findRecaptchaClients()''')
-                    time.sleep(3)
-                    for entry in driver.get_log('browser'):
-                        k = entry['message'].find("___grecaptcha_cfg.clients['0']")
-                        if k != -1:
-                            lol = entry['message'][k:-1]
                 lol = lol + "('"+kekw+"');"
                 driver.execute_script(lol)
                 if not startflag:
