@@ -8,24 +8,26 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import requests
 import undetected_chromedriver as uc
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-
+import queue
 from ScreenManager import CheckImage
 
 
 class GamerBot:
     
-    def __init__(self, options, path):
+    def __init__(self, options, acc_name, login, password, window, queue):
         self.options = options
         self.driver = uc.Chrome(chrome_options=options)
         self.actions = ActionChains(self.driver)
         self.finder = CheckImage()
-        self.buttons = {'mine1.png': 'main.png', 'login.png': 'screen.png', 'mining hub button.png': 'return menu.png',
-                        'mine2.png': 'mining hub.png', 'claim.png': 'claim menu.png'}
-        self.mainbuttons = ['mine1.png', 'mining hub button.png', 'mine2.png', 'claim.png', 'Close.png', 'Close2.png',
-                            'claim_big.png', 'login.png']
         self.mainWindowHandle = ''
-        self.acc_name = None
+        self.acc_name = acc_name
+        self.password = password
+        self.login = login
+        self.window = window
+        self.queue = queue
+        self.stop = False
+
+        self.startgame()
     
     def startgame(self):
 
@@ -36,14 +38,7 @@ class GamerBot:
         element.click()
         time.sleep(2)
         self.mainWindowHandle = self.driver.current_window_handle
-        # time.sleep(10)
-        with open('auth.txt') as f:
-            login = f.readline()
-            login = login.replace('\n', '')
-            password = f.readline()
-            password = password.replace('\n', '')
-            self.acc_name = f.readline()
-        
+
         flag = True
         while flag:
             try:
@@ -81,12 +76,12 @@ class GamerBot:
 
                         element[0].click()
                         element[0].clear()
-                        element[0].send_keys(login)
+                        element[0].send_keys(self.login)
                         element2 = self.driver.find_elements_by_xpath('//*[@name="password"]')
                         element2[0].click()
                         element2[0].clear()
-                        element2[0].send_keys(password)
-                        captcha.kok(self.driver, True)
+                        element2[0].send_keys(self.password)
+                        captcha.kok(self.driver, True, self.window, 'output_' + self.acc_name)
                         time.sleep(0.5)
                         element = self.driver.find_elements_by_xpath('//button[text()="Login"]')
                         element[0].click()
@@ -114,7 +109,14 @@ class GamerBot:
                 pass
 
         self.driver.switch_to.window(self.mainWindowHandle)
-        input()
+        self.window['output_' + self.acc_name].update('Press Go to start farming')
+        self.window['go_' + self.acc_name].update(disabled=False)
+        speed = self.queue.get()
+        self.window['go_' + self.acc_name].update(disabled=True)
+        self.window['stop_' + self.acc_name].update(disabled=False)
+        self.window['output_' + self.acc_name].update('Processing')
+        threading.Thread(target=self.kill_thread).start()
+
         time.sleep(1)
         self.driver.execute_script('''document.querySelector("p").remove()
 
@@ -194,13 +196,21 @@ for (let i = 0; i < myElements.length; i++) {
     def main_cycle(self):
         # main
         while True:
+            if self.stop:
+                exit()
             try:
 
                 if self.get_cpu():
                     try:
                         time_mas = self.driver.find_element_by_xpath('//span[@id=\'countdown\']').text.split(':')
                         time_to_sleep = int(time_mas[0]) * 360 + int(time_mas[1]) * 60 + int(time_mas[2])
-                        time.sleep(time_to_sleep)
+                        end_time = time.time() + time_to_sleep
+                        while time.time() < end_time:
+                            if self.stop:
+                                exit()
+                            self.window['output_' + self.acc_name].update('cooldown - {}:{}'.format(int((end_time - time.time())//60), int((end_time - time.time())%60)))
+                            time.sleep(1)
+                        #time.sleep(time_to_sleep)
                         try:
                             element = self.driver.find_element_by_xpath('//button[@id=\'mine\']')
                             time.sleep(1)
@@ -209,7 +219,8 @@ for (let i = 0; i < myElements.length; i++) {
                                                                                              '//button[@id=\'claim\']')))
                             time.sleep(3)
                         except Exception as Err:
-                            print(f'Ошибка {Err}')
+                            pass
+                            #print(f'Ошибка {Err}')
                     except:
                         pass
                     try:
@@ -219,39 +230,57 @@ for (let i = 0; i < myElements.length; i++) {
                                 time.sleep(1)
                                 element.click()
                             except Exception as Err:
-                                print(f'Ошибка {Err}')
+                                pass
+                                # print(f'Ошибка {Err}')
                         else:
                             try:
                                 element = self.driver.find_element_by_xpath('//button[@id=\'mine\']')
                                 time.sleep(1)
                                 element.click()
                             except Exception as Err:
-                                print(f'Ошибка {Err}')
+                                pass
+                                # print(f'Ошибка {Err}')
                     except Exception as Err:
-                        print(f'Ошибка {Err}')
+                        pass
+                        # print(f'Ошибка {Err}')
                 else:
-                    print('Кажется кончилось цпу')
+                    self.window['output_' + self.acc_name].update('Кажется кончилось цпу')
+                    #print('Кажется кончилось цпу')
                     time.sleep(5)
             except Exception as Err:
-                print(f'Ошибка {Err}')
+                pass
+                # print(f'Ошибка {Err}')
             time.sleep(5)
     
     def captcha_thread(self):
         while True:
+            if self.stop:
+                exit()
             windows = self.driver.window_handles
             if len(windows) > 1:
                 try:
-                    captcha.kok(self.driver, False)
+                    captcha.kok(self.driver, False, self.window, 'output_' + self.acc_name)
                 except:
                     self.driver.close()
                 time.sleep(2)
                 self.driver.switch_to.window(self.mainWindowHandle)
                 time.sleep(7)
             time.sleep(4)
+
+    def kill_thread(self):
+        while True:
+            message = self.queue.get()
+            print(message)
+            if message == 'stop':
+                self.stop = True
+                print(self.stop)
+                self.driver.quit();
+                exit()
+
     
     def wait_for_find_button(self, button):
         while True:
-            print('ищу кнопку')
+            #print('ищу кнопку')
             # self.driver.save_screenshot(self.buttons[button])
             screenshot = self.driver.get_screenshot_as_png()
             cords = self.find_button(button, screenshot)
@@ -291,7 +320,7 @@ for (let i = 0; i < myElements.length; i++) {
         self.driver.execute_script('document.querySelector(".content").innerHTML = "{}%";'.format(percentage))
         self.driver.execute_script('document.querySelector(".perclabel").innerHTML = "CPU used - {} ms / {} ms";'.format(cpu_used,cpu_max))
 
-        if response["cpu_limit"]["available"] >= 1000:
+        if response["cpu_limit"]["available"] >= 2200:
             return True
         else:
             return False
@@ -309,6 +338,6 @@ if __name__ == "__main__":
     
     except:
         pass
-    print()
+    #print()
     bot = GamerBot(options, './chromedriver.exe')
     bot.startgame()

@@ -8,6 +8,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 import captcha
 import requests
 
+
 from ScreenManager import CheckImage
 
 class GamerBot:

@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 with open('token.txt') as f:
     token = f.read()
 
-def kok(driver, startflag):
+def kok(driver, startflag, output_window, key):
     flag = True
     while flag:
         windows = driver.window_handles
@@ -65,7 +65,8 @@ def kok(driver, startflag):
                                                                     }
                                                                     return (findRecaptchaClients())''')[0]
                 while not lol:
-                    print('не нашел функцию капчи...')
+                    output_window[key].update('не нашел функцию капчи...')
+                    #print('не нашел функцию капчи...')
                     lol = driver.execute_script('''function findRecaptchaClients() {
                                                                           // eslint-disable-next-line camelcase
                                                                           if (typeof (___grecaptcha_cfg) !== 'undefined') {
@@ -108,9 +109,9 @@ def kok(driver, startflag):
                                                                         return (findRecaptchaClients())''')[0]
 
                 #print(driver.current_url)
-                kekw = getKey(driver.current_url)
+                kekw = getKey(driver.current_url, output_window, key)
                 while kekw == 0:
-                    kekw = getKey(driver.current_url)
+                    kekw = getKey(driver.current_url, output_window, key)
                     #raise Exception('3228')
 
                 lol = lol + "('"+kekw+"');"
@@ -126,7 +127,7 @@ def kok(driver, startflag):
 
 
 
-def getKey(url):
+def getKey(url, output_window, key):
 
     from selenium.webdriver.support.wait import WebDriverWait
 
@@ -139,8 +140,10 @@ def getKey(url):
     # solver.set_data_s('"data-s" token from Google Search results "protection"')
     g_response = solver.solve_and_return_solution()
     if g_response != 0:
-        print("g-response: " + g_response)
+        output_window[key].update('не нашел функцию капчи...')
+        #print("g-response: " + g_response)
         return g_response
     else:
-        print("task finished with error " + solver.error_code)
+        output_window[key].update('не нашел функцию капчи...')
+        #print("task finished with error " + solver.error_code)
         return 0
