@@ -54,7 +54,7 @@ def start_bot(account):
         options.add_argument("--window-size=1600,900")
         threading.Thread(target=RedditClicker.GamerBot,
                          args=(options, account, accounts[account][0], accounts[account][1], window, accounts[account][2])).start()
-        window['run_' + account].update(disabled=True)
+        #window['run_' + account].update(disabled=True)
 
     except:
         pass
