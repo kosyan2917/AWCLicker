@@ -109,6 +109,7 @@ def kok(driver, startflag, output_window, key):
                                                                         return (findRecaptchaClients())''')[0]
 
                 #print(driver.current_url)
+                output_window[key].update('Solving captcha')
                 kekw = getKey(driver.current_url, output_window, key)
                 while kekw == 0:
                     kekw = getKey(driver.current_url, output_window, key)
