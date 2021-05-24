@@ -52,6 +52,13 @@ class GamerBot:
 
 
         self.driver.get("https://aliens.artsy.nz/")
+        self.window['output_' + self.acc_name].update('Press Go to start farming')
+        self.window['go_' + self.acc_name].update(disabled=False)
+        speed = self.queue.get()
+        self.window['go_' + self.acc_name].update(disabled=True)
+        self.window['stop_' + self.acc_name].update(disabled=False)
+        self.window['output_' + self.acc_name].update('Processing')
+        threading.Thread(target=self.kill_thread).start()
         element = self.driver.find_element_by_xpath("//button[@id='login']")
         time.sleep(2)
         element.click()
@@ -131,13 +138,7 @@ class GamerBot:
                 pass
 
         self.driver.switch_to.window(self.mainWindowHandle)
-        self.window['output_' + self.acc_name].update('Press Go to start farming')
-        self.window['go_' + self.acc_name].update(disabled=False)
-        speed = self.queue.get()
-        self.window['go_' + self.acc_name].update(disabled=True)
-        self.window['stop_' + self.acc_name].update(disabled=False)
-        self.window['output_' + self.acc_name].update('Processing')
-        threading.Thread(target=self.kill_thread).start()
+
 
         time.sleep(1)
         self.driver.execute_script('''document.querySelector("p").remove()
@@ -237,16 +238,16 @@ for (let i = 0; i < myElements.length; i++) {
                                 self.window['output_' + self.acc_name].update('cooldown - {}:{}'.format(int((end_time - time.time())//60), int((end_time - time.time())%60)))
                                 time.sleep(1)
                             #time.sleep(time_to_sleep)
-                            try:
-                                element = self.driver.find_element_by_xpath('//button[@id=\'mine\']')
-                                time.sleep(1)
-                                element.click()
-                                wait = WebDriverWait(self.driver, 20)
-                                wait.until(element_has_text('//span[@id=\'countdown\']', self.driver))
-
-                                time.sleep(1)
-                            except Exception as Err:
-                                pass
+                            # try:
+                            #     element = self.driver.find_element_by_xpath('//button[@id=\'mine\']')
+                            #     time.sleep(1)
+                            #     element.click()
+                            #     wait = WebDriverWait(self.driver, 20)
+                            #     wait.until(element_has_text('//span[@id=\'countdown\']', self.driver))
+                            #
+                            #     time.sleep(1)
+                            # except Exception as Err:
+                            #     pass
                                 #print(f'Ошибка {Err}')
                     except:
                         pass
@@ -361,9 +362,9 @@ if __name__ == "__main__":
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         options.add_argument("--window-size=1600,900")
-    #        chromeProfile = userdata
-    #       options.add_argument(f"--user-data-dir={chromeProfile}")
-    # options.add_argument("--profile-directory=Profile 1")
+        # chromeProfile = 'D:\\Projects\\Python\\alienwords\\User Data1'
+        # options.add_argument(f"--user-data-dir={chromeProfile}")
+        # options.add_argument("--profile-directory=Profile 5")
     
     except:
         pass

@@ -52,6 +52,9 @@ def start_bot(account):
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         options.add_argument("--window-size=1600,900")
+        # chromeProfile = 'D:\\Projects\\Python\\alienwords\\User Data1'
+        # options.add_argument(f"--user-data-dir={chromeProfile}")
+        # options.add_argument("--profile-directory=Profile 1")
         threading.Thread(target=RedditClicker.GamerBot,
                          args=(options, account, accounts[account][0], accounts[account][1], window, accounts[account][2])).start()
         #window['run_' + account].update(disabled=True)
