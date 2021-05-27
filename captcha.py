@@ -7,66 +7,24 @@ with open('token.txt') as f:
     token = f.read()
 
 def kok(driver, startflag, output_window, key):
-    flag = True
-    while flag:
-        windows = driver.window_handles
-        for window in windows:
-            driver.switch_to.window(window)
-            element_err = driver.find_elements_by_xpath('//div[@id="cf-error-details"]')
-            element = driver.find_elements_by_xpath('//*[@id="g-recaptcha-response"]')
-            if element:
-                break
-            if element_err:
-                driver.get("https://all-access.wax.io/cloud-wallet/signing/")
-                time.sleep(2)
+    if startflag:
+        flag = True
+        while flag:
+            windows = driver.window_handles
+            for window in windows:
+                driver.switch_to.window(window)
+                element_err = driver.find_elements_by_xpath('//div[@id="cf-error-details"]')
+                element = driver.find_elements_by_xpath('//*[@id="g-recaptcha-response"]')
+                if element:
+                    break
+                if element_err:
+                    driver.get("https://all-access.wax.io/cloud-wallet/signing/")
+                    time.sleep(2)
 
-        for window in windows:
-            driver.switch_to.window(window)
-            element = driver.find_elements_by_xpath('//*[@id="g-recaptcha-response"]')
-            if element:
-                lol = driver.execute_script('''function findRecaptchaClients() {
-                                                                      // eslint-disable-next-line camelcase
-                                                                      if (typeof (___grecaptcha_cfg) !== 'undefined') {
-                                                                        // eslint-disable-next-line camelcase, no-undef
-                                                                        return Object.entries(___grecaptcha_cfg.clients).map(([cid, client]) => {
-                                                                          const data = { id: cid, version: cid >= 10000 ? 'V3' : 'V2' };
-                                                                          const objects = Object.entries(client).filter(([_, value]) => value && typeof value === 'object');
-
-                                                                          objects.forEach(([toplevelKey, toplevel]) => {
-                                                                            const found = Object.entries(toplevel).find(([_, value]) => (
-                                                                              value && typeof value === 'object' && 'sitekey' in value && 'size' in value
-                                                                            ));
-
-                                                                            if (typeof toplevel === 'object' && toplevel instanceof HTMLElement && toplevel['tagName'] === 'DIV'){
-                                                                                data.pageurl = toplevel.baseURI;
-                                                                            }
-
-                                                                            if (found) {
-                                                                              const [sublevelKey, sublevel] = found;
-
-                                                                              data.sitekey = sublevel.sitekey;
-                                                                              const callbackKey = data.version === 'V2' ? 'callback' : 'promise-callback';
-                                                                              const callback = sublevel[callbackKey];
-                                                                              if (!callback) {
-                                                                                data.callback = null;
-                                                                                data.function = null;
-                                                                              } else {
-                                                                                data.function = callback;
-                                                                                const keys = [cid, toplevelKey, sublevelKey, callbackKey].map((key) => `['${key}']`).join('');
-                                                                                data.callback = `___grecaptcha_cfg.clients${keys}`;
-                                                                                //return(data.callback)
-                                                                              }
-                                                                            }
-                                                                          });
-                                                                          return data.callback;
-                                                                        });
-                                                                      }
-                                                                      return [];
-                                                                    }
-                                                                    return (findRecaptchaClients())''')[0]
-                while not lol:
-                    output_window[key].update('не нашел функцию капчи...')
-                    #print('не нашел функцию капчи...')
+            for window in windows:
+                driver.switch_to.window(window)
+                element = driver.find_elements_by_xpath('//*[@id="g-recaptcha-response"]')
+                if element:
                     lol = driver.execute_script('''function findRecaptchaClients() {
                                                                           // eslint-disable-next-line camelcase
                                                                           if (typeof (___grecaptcha_cfg) !== 'undefined') {
@@ -74,19 +32,19 @@ def kok(driver, startflag, output_window, key):
                                                                             return Object.entries(___grecaptcha_cfg.clients).map(([cid, client]) => {
                                                                               const data = { id: cid, version: cid >= 10000 ? 'V3' : 'V2' };
                                                                               const objects = Object.entries(client).filter(([_, value]) => value && typeof value === 'object');
-
+    
                                                                               objects.forEach(([toplevelKey, toplevel]) => {
                                                                                 const found = Object.entries(toplevel).find(([_, value]) => (
                                                                                   value && typeof value === 'object' && 'sitekey' in value && 'size' in value
                                                                                 ));
-
+    
                                                                                 if (typeof toplevel === 'object' && toplevel instanceof HTMLElement && toplevel['tagName'] === 'DIV'){
                                                                                     data.pageurl = toplevel.baseURI;
                                                                                 }
-
+    
                                                                                 if (found) {
                                                                                   const [sublevelKey, sublevel] = found;
-
+    
                                                                                   data.sitekey = sublevel.sitekey;
                                                                                   const callbackKey = data.version === 'V2' ? 'callback' : 'promise-callback';
                                                                                   const callback = sublevel[callbackKey];
@@ -107,24 +65,86 @@ def kok(driver, startflag, output_window, key):
                                                                           return [];
                                                                         }
                                                                         return (findRecaptchaClients())''')[0]
+                    while not lol:
+                        output_window[key].update('не нашел функцию капчи...')
+                        #print('не нашел функцию капчи...')
+                        lol = driver.execute_script('''function findRecaptchaClients() {
+                                                                              // eslint-disable-next-line camelcase
+                                                                              if (typeof (___grecaptcha_cfg) !== 'undefined') {
+                                                                                // eslint-disable-next-line camelcase, no-undef
+                                                                                return Object.entries(___grecaptcha_cfg.clients).map(([cid, client]) => {
+                                                                                  const data = { id: cid, version: cid >= 10000 ? 'V3' : 'V2' };
+                                                                                  const objects = Object.entries(client).filter(([_, value]) => value && typeof value === 'object');
+    
+                                                                                  objects.forEach(([toplevelKey, toplevel]) => {
+                                                                                    const found = Object.entries(toplevel).find(([_, value]) => (
+                                                                                      value && typeof value === 'object' && 'sitekey' in value && 'size' in value
+                                                                                    ));
+    
+                                                                                    if (typeof toplevel === 'object' && toplevel instanceof HTMLElement && toplevel['tagName'] === 'DIV'){
+                                                                                        data.pageurl = toplevel.baseURI;
+                                                                                    }
+    
+                                                                                    if (found) {
+                                                                                      const [sublevelKey, sublevel] = found;
+    
+                                                                                      data.sitekey = sublevel.sitekey;
+                                                                                      const callbackKey = data.version === 'V2' ? 'callback' : 'promise-callback';
+                                                                                      const callback = sublevel[callbackKey];
+                                                                                      if (!callback) {
+                                                                                        data.callback = null;
+                                                                                        data.function = null;
+                                                                                      } else {
+                                                                                        data.function = callback;
+                                                                                        const keys = [cid, toplevelKey, sublevelKey, callbackKey].map((key) => `['${key}']`).join('');
+                                                                                        data.callback = `___grecaptcha_cfg.clients${keys}`;
+                                                                                        //return(data.callback)
+                                                                                      }
+                                                                                    }
+                                                                                  });
+                                                                                  return data.callback;
+                                                                                });
+                                                                              }
+                                                                              return [];
+                                                                            }
+                                                                            return (findRecaptchaClients())''')[0]
 
-                #print(driver.current_url)
-                output_window[key].update('Solving captcha')
-                kekw = getKey(driver.current_url, output_window, key)
-                while kekw == 0:
+                    #print(driver.current_url)
+                    output_window[key].update('Solving captcha')
                     kekw = getKey(driver.current_url, output_window, key)
-                    #raise Exception('3228')
+                    while kekw == 0:
+                        kekw = getKey(driver.current_url, output_window, key)
+                        #raise Exception('3228')
 
-                lol = lol + "('"+kekw+"');"
-                driver.execute_script(lol)
-                if not startflag:
-                    element = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//button[@class='button button-secondary button-large text-1-5rem text-bold mx-1']")))
-                    element.click()
+                    lol = lol + "('"+kekw+"');"
+                    driver.execute_script(lol)
+                    if not startflag:
+                        element = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//button[@class='button button-secondary button-large text-1-5rem text-bold mx-1']")))
+                        element.click()
 
+                    flag = False
+
+                    break
+                time.sleep(0.5)
+    else:
+        flag = True
+        while flag:
+            windows = driver.window_handles
+            for window in windows:
+                driver.switch_to.window(window)
+                element_err = driver.find_elements_by_xpath('//div[@id="cf-error-details"]')
+                element = driver.find_elements_by_xpath("//*[contains(text(), 'Approve')]")
+                if element:
+                    break
+                if element_err:
+                    driver.get("https://all-access.wax.io/cloud-wallet/signing/")
+                    time.sleep(2)
+
+            element = driver.find_element_by_xpath("//*[contains(text(), 'Approve')]")
+            if element:
+                element.click()
                 flag = False
-
                 break
-            time.sleep(0.5)
 
 
 
@@ -141,10 +161,10 @@ def getKey(url, output_window, key):
     # solver.set_data_s('"data-s" token from Google Search results "protection"')
     g_response = solver.solve_and_return_solution()
     if g_response != 0:
-        output_window[key].update('не нашел функцию капчи...')
+        #   output_window[key].update('не нашел функцию капчи...')
         #print("g-response: " + g_response)
         return g_response
     else:
-        output_window[key].update('не нашел функцию капчи...')
+        #output_window[key].update('не нашел функцию капчи...')
         #print("task finished with error " + solver.error_code)
         return 0
