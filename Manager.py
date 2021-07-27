@@ -31,7 +31,9 @@ f = open('./accs.txt')
 for line in f:
     if line:
         line = line.split()
-        accounts.update({line[2]:[line[0], line[1], queue.Queue()]})
+        accounts.update({line[2]:[line[0], line[1], queue.Queue(), line[3]]})
+        
+
 
 print(accounts)
 layout = []
@@ -56,7 +58,7 @@ def start_bot(account):
         # options.add_argument(f"--user-data-dir={chromeProfile}")
         # options.add_argument("--profile-directory=Profile 1")
         threading.Thread(target=RedditClicker.GamerBot,
-                         args=(options, account, accounts[account][0], accounts[account][1], window, accounts[account][2])).start()
+                         args=(options, account, accounts[account][0], accounts[account][1], window, accounts[account][2], accounts[account][3])).start()
         #window['run_' + account].update(disabled=True)
 
     except:
@@ -71,6 +73,7 @@ while True:
     if event == 'RunAll':
         for account in accounts:
             start_bot(account)
+            time.sleep(30)
 
 
     if 'run_' in event:

@@ -8,6 +8,7 @@ import captcha
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import requests
+from MailParser import MailParser
 import undetected_chromedriver as uc
 import queue
 from ScreenManager import CheckImage
@@ -33,9 +34,9 @@ class element_has_text(object):
 
 class GamerBot:
     
-    def __init__(self, options, acc_name, login, password, window, queue):
+    def __init__(self, options, acc_name, login, password, window, queue, email_psw):
         self.options = options
-        self.driver = uc.Chrome(chrome_options=options)
+        self.driver = uc.Chrome(executable_path='chromedriver.exe',chrome_options=options)
         self.actions = ActionChains(self.driver)
         self.finder = CheckImage()
         self.mainWindowHandle = ''
@@ -45,13 +46,15 @@ class GamerBot:
         self.window = window
         self.queue = queue
         self.stop = False
-
+        self.parser = MailParser(login, email_psw)
         self.startgame()
     
     def startgame(self):
 
 
-        self.driver.get("https://aliens.artsy.nz/")
+        self.driver.get("http://play.pocketaliens.io/")
+        time.sleep(5)
+        self.driver.execute_script("window.location.reload()")
         self.window['output_' + self.acc_name].update('Press Go to start farming')
         self.window['go_' + self.acc_name].update(disabled=False)
         speed = self.queue.get()
@@ -82,13 +85,9 @@ class GamerBot:
                         time.sleep(2)
                         flag = False
                         break
-
-
                     time.sleep(0.5)
-
             except:
                 pass
-
         flag = True
         while flag:
             try:
@@ -97,9 +96,6 @@ class GamerBot:
                     self.driver.switch_to.window(window)
                     element = self.driver.find_elements_by_xpath('//*[@name="userName"]')
                     if element:
-                        #
-
-
                         element[0].click()
                         element[0].clear()
                         element[0].send_keys(self.login)
@@ -107,7 +103,7 @@ class GamerBot:
                         element2[0].click()
                         element2[0].clear()
                         element2[0].send_keys(self.password)
-                        captcha.kok(self.driver, True, self.window, 'output_' + self.acc_name)
+                        #captcha.kok(self.driver, True, self.window, 'output_' + self.acc_name)
                         time.sleep(0.5)
                         element = self.driver.find_elements_by_xpath('//button[text()="Login"]')
                         element[0].click()
@@ -118,6 +114,33 @@ class GamerBot:
             except:
                 pass
         flag = True
+        time.sleep(5)
+        if len(self.driver.window_handles) != 1:
+            while flag:
+                print('Я в цикле')
+                try:
+                    windows = self.driver.window_handles
+                    for window in windows:
+                        self.driver.switch_to.window(window)
+                        element = self.driver.find_elements_by_xpath('//input[@name=\'code\']')
+                        if element:
+                            element[0].click()
+                            element[0].clear()
+                            element[0].send_keys(self.parser.get_email_code())
+                            element[0].send_keys(u'\ue007')
+                            time.sleep(0.5)
+                            flag = False
+                            self.driver.switch_to_window(self.mainWindowHandle)
+                            break
+                        element = self.driver.find_elements_by_xpath('//*[text()="Approve"]')
+                        if element:
+                            flag = False
+                            self.driver.switch_to_window(self.mainWindowHandle)
+                            break
+                except Exception as err:
+                    print(err)
+        flag = True
+        time.sleep(3)
         while flag:
             try:
                 windows = self.driver.window_handles
@@ -138,8 +161,6 @@ class GamerBot:
                 pass
 
         self.driver.switch_to.window(self.mainWindowHandle)
-
-
         time.sleep(1)
         self.driver.execute_script('''document.querySelector("p").remove()
 
@@ -213,7 +234,7 @@ for (let i = 0; i < myElements.length; i++) {
     myElements[i].style.width = "340px"; 
 }''')
         x = threading.Thread(target=self.captcha_thread)
-        x.start()
+        #x.start()
         self.main_cycle()
 
 
@@ -257,6 +278,27 @@ for (let i = 0; i < myElements.length; i++) {
                                 element = self.driver.find_element_by_xpath('//button[@id=\'claim\']')
                                 time.sleep(1)
                                 element.click()
+                                flag = True
+                                time.sleep(3)
+                                while flag:
+                                    try:
+                                        windows = self.driver.window_handles
+                                        if len(windows) == 1:
+                                            flag = False
+                                            break
+                                        for window in windows:
+                                            self.driver.switch_to.window(window)
+                                            element = self.driver.find_elements_by_xpath('//*[text()="Approve"]')
+                                            if element:
+                                                self.driver.switch_to.window(window)
+                                                element[0].click()
+                                                time.sleep(2)
+                                                flag = False
+                                                break
+                                            time.sleep(0.5)
+                                    except:
+                                        pass
+                                self.driver.switch_to_window(self.mainWindowHandle)
                             except Exception as Err:
                                 pass
                                 # print(f'Ошибка {Err}')
