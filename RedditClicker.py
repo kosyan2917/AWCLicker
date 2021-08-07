@@ -36,7 +36,7 @@ class GamerBot:
     
     def __init__(self, options, acc_name, login, password, window, queue, email_psw):
         self.options = options
-        self.driver = uc.Chrome(executable_path='chromedriver.exe',chrome_options=options)
+        self.driver = uc.Chrome(executable_path='./chromedriver.exe',chrome_options=options)
         self.actions = ActionChains(self.driver)
         self.finder = CheckImage()
         self.mainWindowHandle = ''
@@ -57,7 +57,7 @@ class GamerBot:
         self.driver.execute_script("window.location.reload()")
         self.window['output_' + self.acc_name].update('Press Go to start farming')
         self.window['go_' + self.acc_name].update(disabled=False)
-        speed = self.queue.get()
+        #speed = self.queue.get()
         self.window['go_' + self.acc_name].update(disabled=True)
         self.window['stop_' + self.acc_name].update(disabled=False)
         self.window['output_' + self.acc_name].update('Processing')
@@ -316,9 +316,80 @@ for (let i = 0; i < myElements.length; i++) {
                         pass
                         # print(f'Ошибка {Err}')
                 else:
+                    self.window['output_' + self.acc_name].update(
+                        'новый клик')
+                    try:
+                        time_mas = self.driver.find_element_by_xpath('//span[@id=\'countdown\']').text.split(':')
+                        time_to_sleep = int(time_mas[0]) * 360 + int(time_mas[1]) * 60 + int(time_mas[2])
+                        if time_to_sleep:
+                            end_time = time.time() + time_to_sleep
+                            while time.time() < end_time:
+                                if self.stop:
+                                    exit()
+                                self.window['output_' + self.acc_name].update(
+                                    'cooldown - {}:{}'.format(int((end_time - time.time()) // 60),
+                                                              int((end_time - time.time()) % 60)))
+                                time.sleep(1)
+                            # time.sleep(time_to_sleep)
+                            # try:
+                            #     element = self.driver.find_element_by_xpath('//button[@id=\'mine\']')
+                            #     time.sleep(1)
+                            #     element.click()
+                            #     wait = WebDriverWait(self.driver, 20)
+                            #     wait.until(element_has_text('//span[@id=\'countdown\']', self.driver))
+                            #
+                            #     time.sleep(1)
+                            # except Exception as Err:
+                            #     pass
+                            # print(f'Ошибка {Err}')
+                    except:
+                        pass
+                    try:
+                        if self.driver.find_element_by_xpath('//button[@id=\'claim\']').is_enabled():
+                            try:
+                                element = self.driver.find_element_by_xpath('//button[@id=\'claim\']')
+                                time.sleep(1)
+                                element.click()
+                                flag = True
+                                time.sleep(3)
+                                while flag:
+                                    try:
+                                        windows = self.driver.window_handles
+                                        if len(windows) == 1:
+                                            flag = False
+                                            break
+                                        for window in windows:
+                                            self.driver.switch_to.window(window)
+                                            element = self.driver.find_elements_by_xpath('//*[text()="Approve"]')
+                                            if element:
+                                                self.driver.switch_to.window(window)
+                                                element[0].click()
+                                                time.sleep(2)
+                                                flag = False
+                                                break
+                                            time.sleep(0.5)
+                                    except:
+                                        pass
+                                self.driver.switch_to_window(self.mainWindowHandle)
+                            except Exception as Err:
+                                pass
+                                # print(f'Ошибка {Err}')
+                        else:
+                            try:
+                                element = self.driver.find_element_by_xpath('//button[@id=\'mine\']')
+                                time.sleep(1)
+                                element.click()
+                                wait = WebDriverWait(self.driver, 20)
+                                wait.until(element_has_text('//span[@id=\'countdown\']', self.driver))
+                            except Exception as Err:
+                                pass
+                                # print(f'Ошибка {Err}')
+                    except Exception as Err:
+                        pass
+                        # print(f'Ошибка {Err}')
                     self.window['output_' + self.acc_name].update('Кажется кончилось цпу')
                     #print('Кажется кончилось цпу')
-                    time.sleep(5)
+                    time.sleep(100)
             except Exception as Err:
                 pass
                 # print(f'Ошибка {Err}')

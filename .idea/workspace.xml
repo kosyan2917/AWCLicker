@@ -2,12 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="856dcd5d-6352-4162-82ab-cf483f0cb51b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/AWCLicker.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/AWCLicker.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RedditClicker.py" beforeDir="false" afterPath="$PROJECT_DIR$/RedditClicker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chromedriver.exe" beforeDir="false" afterPath="$PROJECT_DIR$/chromedriver.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WAX_Login_Verification_Code/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/WAX_Login_Verification_Code/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,6 +198,10 @@
       <workItem from="1622073855637" duration="651000" />
       <workItem from="1622153119346" duration="2564000" />
       <workItem from="1627399319126" duration="6946000" />
+      <workItem from="1627684320172" duration="567000" />
+      <workItem from="1627691219212" duration="77000" />
+      <workItem from="1627694445020" duration="321000" />
+      <workItem from="1628295339886" duration="204000" />
     </task>
     <servers />
   </component>
@@ -247,10 +249,10 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/AWCLicker$SeleniumProp.coverage" NAME="SeleniumProp Coverage Results" MODIFIED="1619055166134" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SmartClicker_py$test.coverage" NAME="test Coverage Results" MODIFIED="1620822375807" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SmartClicker_py$Manager.coverage" NAME="Manager Coverage Results" MODIFIED="1621122116049" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/AWCLicker$SmartClicker__2_.coverage" NAME="SmartClicker (2) Coverage Results" MODIFIED="1619127953262" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../AWCLicker4" />
-    <SUITE FILE_PATH="coverage/AWCLicker$SmartClicker__1_.coverage" NAME="SmartClicker (1) Coverage Results" MODIFIED="1619127751656" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../AWCLicker 4" />
     <SUITE FILE_PATH="coverage/AWCLicker$SmartClicker.coverage" NAME="SmartClicker Coverage Results" MODIFIED="1619358783036" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AWCLicker$SmartClicker__2_.coverage" NAME="SmartClicker (2) Coverage Results" MODIFIED="1619127953262" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../AWCLicker4" />
+    <SUITE FILE_PATH="coverage/SmartClicker_py$Manager.coverage" NAME="Manager Coverage Results" MODIFIED="1621122116049" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AWCLicker$Manager.coverage" NAME="Manager Coverage Results" MODIFIED="1627412755036" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AWCLicker$SmartClicker__1_.coverage" NAME="SmartClicker (1) Coverage Results" MODIFIED="1619127751656" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../AWCLicker 4" />
   </component>
 </project>

@@ -64,6 +64,10 @@ def start_bot(account):
     except:
         pass
 
+def runAll():
+    for account in accounts:
+        start_bot(account)
+        time.sleep(30)
 
 while True:
     event, values = window.read()
@@ -71,9 +75,7 @@ while True:
         break
     print(event)
     if event == 'RunAll':
-        for account in accounts:
-            start_bot(account)
-            time.sleep(30)
+        threading.Thread(target=runAll).start()
 
 
     if 'run_' in event:
